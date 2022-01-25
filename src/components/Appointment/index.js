@@ -9,6 +9,7 @@ import Status from "./Status";
 import Confirm from "./Confirm";
 
 export default function Appointment(props) {
+  console.log('PROPS', props);
   const appointmentTime = () => {
     if (props.time) {
       return `Appointment at ${props.time}`
@@ -38,6 +39,7 @@ export default function Appointment(props) {
   const SAVE = "SAVE";
   const DELETE = "DELETE"
   const CONFIRM = "CONFIRM"
+  const EDIT = "EDIT"
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -53,9 +55,21 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete = {() => transition(CONFIRM)}
+          onEdit = {() => transition(EDIT)}
         />
       )}
-      {mode === CREATE && <Form onSave = {save} interviewers = {props.interviewers} onCancel = {() => back()} />}
+      {mode === CREATE && <Form
+      onSave = {save} 
+      onCancel = {() => back()}
+      interviewers = {props.interviewers}
+       />}
+      {mode === EDIT && <Form
+      onSave = {save} 
+      onCancel = {() => back()}
+      interviewers = {props.interviewers}
+      interviewer={props.interview.interviewer.id}
+      student={props.interview.student}
+       />}
       {mode === SAVE && <Status message = {'Saving'} />}
       {mode === DELETE && <Status message = {'Deleting'} />}
       {mode === CONFIRM && <Confirm
