@@ -48,48 +48,48 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    return axios.put(`/api/appointments/${id}`, appointment )
-    .then(
-      console.log(1),
-      setState({
-        ...state,
-        appointments
-      })
-    )
-    
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(() => {
+        setState({
+          ...state,
+          appointments
+        })
+      }
+      )
   }
 
   function cancelInterview(id) {
     console.log(id);
-    const appointments = {...state.appointments};
+    const appointments = { ...state.appointments };
     appointments[id].interview = null
     console.log('APPOINTMENTS', appointments);
     return axios.delete(`/api/appointments/${id}`)
-    .then (
-      setState({
-        ...state,
-        appointments
-      })
-    )
+      .then(() => {
+        setState({
+          ...state,
+          appointments
+        })
+      }
+      )
     // console.log(state.appointments);
   }
-  
+
   const appointmentsList = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
-      key={appointment.id}
-      id={appointment.id}
-      time={appointment.time}
-      interview={interview}
-      interviewers = {interviewers}
-      bookInterview = {bookInterview}
-      cancelInterview = {cancelInterview} />
-      )
-    })
-    
-    // console.log('INTERVIEWERS', interviewers);
-    // console.log('DAILYAPPOINTMENTS', dailyAppointments);
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewers={interviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview} />
+    )
+  })
+
+  // console.log('INTERVIEWERS', interviewers);
+  // console.log('DAILYAPPOINTMENTS', dailyAppointments);
   return (
     <main className="layout">
       <section className="sidebar">
