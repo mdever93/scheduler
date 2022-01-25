@@ -27,23 +27,60 @@ export function getInterview(state, interview) {
   if (interview === null) {
     return null
   }
-  const output = interview;
-  console.log("OUTPUT:", output);
+  const output = {...interview};
+  // console.log('INTERVIEW', interview);
+  // console.log("OUTPUT:", output);
   const appointmentsKeys = Object.keys(state.appointments)
   for (const i of appointmentsKeys) {
     if (state.appointments[i].interview === null) {
       continue;
     }
-    console.log(state.appointments[i]);
+    // console.log(state.appointments[i]);
     if (state.appointments[i].interview.interviewer === interview.interviewer) {
       const interviewersKeys = Object.keys(state.interviewers);
       for (const i of interviewersKeys) {
-        console.log('HELLO OUTPUT.INTERVIEWER', output.interviewer, i);
+        // console.log('HELLO OUTPUT.INTERVIEWER', output.interviewer, i);
         if (state.interviewers[i].id === output.interviewer) {
           output.interviewer = state.interviewers[i]
+          // console.log('STATE', state.appointments);
           return output;
         }
       }
     }
   }
+}
+
+export function getInterviewersForDay(state, day) {
+  // console.log("STATE: ", state);
+  // console.log("DAY", day);
+  if (state.days.length === 0) {
+    return [];
+  }
+  // console.log('STATE: ', state);
+  const appointments = getAppointmentsForDay(state, day)
+  // console.log("APPOINTMENTS", appointments);
+  let interviewersArray = [];
+  for (const i of appointments) {
+    // console.log('I', i);
+    if (i.interview && !interviewersArray.includes(i.interview.interviewer)) {
+      interviewersArray.push(i.interview.interviewer)
+    }
+  }
+  // console.log("INTERVIEWERS ARRAY", interviewersArray);
+  let interviewers = [];
+  for (const i of interviewersArray) {
+    if (state.interviewers[i]) {
+      interviewers.push(state.interviewers[i])
+    }
+  }
+  // console.log("APPOINTMENTS ARRAY", appointmentsArray);
+  // for (const i of interviewersArray) {
+  //   if (state.appointments[i]) {
+  //     interviewers.push(state.appointments[i])
+  //   }
+  // }
+  // console.log("APPOINTMENTS", appointments);
+  // console.log('INTERVIEWERS', interviewers, interviewers.length);
+  console.log('INTERVIEWERS', interviewers);
+  return interviewers;
 }

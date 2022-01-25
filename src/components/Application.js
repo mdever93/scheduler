@@ -4,7 +4,7 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 
 export default function Application(props) {
@@ -24,9 +24,9 @@ export default function Application(props) {
       axios.get('http://localhost:8001/api/interviewers'),
     ])
       .then(all => {
-        console.log(all[0]); // first
-        console.log(all[1]); // second
-        console.log(all[2]); // second
+        // console.log(all[0]); // first
+        // console.log(all[1]); // second
+        // console.log(all[2]); // second
 
         setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
       })
@@ -36,18 +36,60 @@ export default function Application(props) {
   let dailyAppointments = [];
   dailyAppointments = getAppointmentsForDay(state, state.day)
 
+  const interviewers = getInterviewersForDay(state, state.day)
+
+  function bookInterview(id, interview) {
+    console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return axios.put(`/api/appointments/${id}`, appointment )
+    .then(
+      console.log(1),
+      setState({
+        ...state,
+        appointments
+      })
+    )
+    
+  }
+
+  function cancelInterview(id) {
+    console.log(id);
+    const appointments = {...state.appointments};
+    appointments[id].interview = null
+    console.log('APPOINTMENTS', appointments);
+    return axios.delete(`/api/appointments/${id}`)
+    .then (
+      setState({
+        ...state,
+        appointments
+      })
+    )
+    // console.log(state.appointments);
+  }
+  
   const appointmentsList = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-
     return (
       <Appointment
-        key={appointment.id}
-        id={appointment.id}
-        time={appointment.time}
-        interviewer={interview} />
-    )
-  })
-
+      key={appointment.id}
+      id={appointment.id}
+      time={appointment.time}
+      interview={interview}
+      interviewers = {interviewers}
+      bookInterview = {bookInterview}
+      cancelInterview = {cancelInterview} />
+      )
+    })
+    
+    // console.log('INTERVIEWERS', interviewers);
+    // console.log('DAILYAPPOINTMENTS', dailyAppointments);
   return (
     <main className="layout">
       <section className="sidebar">

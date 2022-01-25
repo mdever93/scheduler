@@ -20,8 +20,8 @@ export default function useVisualMode(initial) {
   //   }
   //   setMode(history[history.length - 1])
   // }
-  console.log('MODE', history[history.length - 1]);
-  console.log('HISTORY', history);
+  // console.log('MODE', history[history.length - 1]);
+  // console.log('HISTORY', history);
   return {
     mode: history[history.length - 1],
     transition,
