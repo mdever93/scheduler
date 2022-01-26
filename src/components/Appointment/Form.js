@@ -27,6 +27,8 @@ export default function Form(props) {
             name="name"
             type="text"
             placeholder="Enter Student Name"
+            data-testid="student-name-input"
+
           /*
             This must be a controlled component
             your code goes here
