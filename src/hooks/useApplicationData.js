@@ -29,6 +29,7 @@ export default function useApplicationData() {
 
   function bookInterview(id, interview) {
     console.log(id, interview);
+    console.log('STATE', state);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -37,7 +38,10 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    const days = updateSpots('save')
+    let days = [...state.days]
+    if (state.appointments[id].interview === null) {
+      days = updateSpots('save')
+    }
 
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
@@ -74,9 +78,9 @@ export default function useApplicationData() {
         if (type === 'save') {
           return { ...day, spots: day.spots - 1 }
         }
-        return {...day, spots: day.spots + 1}
+        return { ...day, spots: day.spots + 1 }
       }
-      return {...day}
+      return { ...day }
     })
     return days
   }
