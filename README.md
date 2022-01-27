@@ -1,5 +1,5 @@
 # Interview Scheduler
-
+Interview Scheduler allows you to book, edit and delete interviews. It was built using React, Express and Node.
 ## Setup
 
 Install dependencies with `npm install`.
