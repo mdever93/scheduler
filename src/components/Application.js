@@ -34,8 +34,6 @@ export default function Application(props) {
     )
   })
 
-  // console.log('INTERVIEWERS', interviewers);
-  // console.log('DAILYAPPOINTMENTS', dailyAppointments);
   return (
     <main className="layout">
       <section className="sidebar">

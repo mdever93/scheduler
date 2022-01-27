@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 export default function InterviewerList(props) {
   const { interviewers, onChange, value } = props;
-  // console.log('INTERVIEWERS', interviewers);
   const parsedInterviewers = interviewers.map((interviewerItem) => (
     <InterviewerListItem
       key={interviewerItem.id}
@@ -15,7 +14,6 @@ export default function InterviewerList(props) {
       setInterviewer={() => onChange(interviewerItem.id)}
        />
   ))
-  console.log("PARSED INTERVIEWERS", parsedInterviewers);
   return (
     <section className="interviewers">
       <h4 className="interviewers__header text--light">Interviewer</h4>
