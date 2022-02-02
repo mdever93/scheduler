@@ -6,23 +6,33 @@ export default function Form(props) {
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("")
+  //clears the input field and selected interviewer
   const reset = () => {
     setStudent("")
     setInterviewer("")
   };
+  //calls reset and onCancel functions
   const cancel = () => {
     reset()
     props.onCancel()
   }
+  //checks to ensure that the user has entered their name and selected an interviewer
   const validate = () => {
-    if (!student) {
-      setError("Student name cannot be blank");
+    if (!student || !interviewer) {
+      if (interviewer) { 
+        setError("Student name cannot be blank");
+        return;
+      }
+      if (student) { 
+        setError("Please select an interviewer");
+        return;
+      }
+      setError("Please enter your name and select an interviewer");
       return;
     }
     setError("");
     props.onSave(student, interviewer)
   }
-
 
   return (
     <main className="appointment__card appointment__card--create">
